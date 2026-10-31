@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#10131c">
+<title>Proxy Server Link</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;padding:20px;display:flex;align-items:center;justify-content:center;background:linear-gradient(145deg,#0c1018,#171d2b);color:#fff;font-family:Arial,sans-serif}
+.card{width:100%;max-width:420px;padding:25px 20px;text-align:center;background:#1a2030;border:1px solid #30394d;border-radius:22px;box-shadow:0 18px 55px #0006}
+.tag{display:inline-block;padding:7px 12px;margin-bottom:12px;color:#9eb7ff;background:#293653;border-radius:30px;font-size:12px;letter-spacing:2px}
+h1{margin:5px 0 8px;font-size:25px}
+.subtitle{margin:0 0 20px;color:#b9c2d3;font-size:14px;line-height:1.6}
+.qr-box{width:100%;max-width:270px;margin:0 auto 20px;padding:10px;background:#fff;border-radius:14px}
+.qr-box img{display:block;width:100%;height:auto;image-rendering:pixelated}
+.timer-label{margin-bottom:5px;color:#b9c2d3;font-size:14px}
+#timer{margin-bottom:18px;font-size:36px;font-weight:bold;letter-spacing:3px}
+.install-btn{display:block;width:100%;padding:15px;border:0;border-radius:12px;background:#394153;color:#aab1c0;font-size:16px;font-weight:bold;cursor:not-allowed}
+.install-btn.ready{background:#4d7cff;color:#fff;cursor:pointer}
+.terms-btn{margin-top:18px;padding:8px;border:0;background:transparent;color:#a9c0ff;font-size:14px;text-decoration:underline;cursor:pointer}
+.note{margin-top:12px;color:#aab3c4;font-size:12px;line-height:1.6}
+.modal{position:fixed;inset:0;z-index:10;display:none;align-items:center;justify-content:center;padding:20px;background:#000b}
+.modal.show{display:flex}
+.modal-content{width:100%;max-width:400px;padding:22px;border:1px solid #39445b;border-radius:18px;background:#1a2030}
+.modal-content h2{margin-top:0;font-size:21px}
+.modal-content p{color:#d6dbea;font-size:15px;line-height:1.8}
+.close-btn{display:block;margin:15px 0 0 auto;padding:10px 20px;border:0;border-radius:9px;background:#4d7cff;color:#fff;font-weight:bold;cursor:pointer}
+</style>
+</head>
+<body>
+
+<main class="card">
+  <div class="tag">PROXY SERVER</div>
+  <h1>Proxy Server Link</h1>
+  <p class="subtitle">QR कोड नीचे दिया गया है। कृपया नियम और शर्तें पढ़ें।</p>
+
+  <div class="qr-box">
+    <img id="qrCode" alt="QR Code">
+  </div>
+
+  <div class="timer-label">लिंक खुलने में बाकी समय</div>
+  <div id="timer">01:00</div>
+
+  <button id="installBtn" class="install-btn" disabled>
+    कृपया प्रतीक्षा करें...
+  </button>
+
+  <button id="termsBtn" class="terms-btn" type="button">
+    Terms &amp; Conditions / नियम और शर्तें
+  </button>
+
+  <p class="note">
+    QR कोड पर पेमेंट करना अनिवार्य नहीं है।
+    एक मिनट पूरा होने के बाद इंस्टॉल लिंक उपलब्ध होगा।
+  </p>
+</main>
+
+<div class="modal" id="termsModal" role="dialog" aria-modal="true">
+  <div class="modal-content">
+    <h2>नियम और शर्तें</h2>
+    <p>
+      अगर आप QR कोड के माध्यम से पेमेंट करना चाहते हैं,
+      तो यह पूरी तरह आपकी इच्छा पर निर्भर है।
+      पेमेंट करना अनिवार्य नहीं है।
+      अगर आप पेमेंट नहीं भी करते हैं,
+      तो एक मिनट का टाइमर पूरा होने के बाद
+      आगे बढ़ने का लिंक उपलब्ध होगा।
+      फैसला पूरी तरह आपका है।
+    </p>
+    <button id="closeTerms" class="close-btn" type="button">बंद करें</button>
+  </div>
+</div>
+
+<script>
+// तुम्हारा QR कोड इसी HTML में मौजूद है।
+const QR_IMAGE =
+"data:image/png;base64,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";
+
+document.getElementById("qrCode").src = QR_IMAGE;
+
+// तुम्हारा इंस्टॉल लिंक
+const INSTALL_LINK =
+"https://terasharefile.com/s/1yqcokBwJavmzM-IAjgPdUA";
+
+let remaining = 60;
+const timer = document.getElementById("timer");
+const installBtn = document.getElementById("installBtn");
+
+function updateTimer() {
+  const minutes = String(Math.floor(remaining / 60)).padStart(2, "0");
+  const seconds = String(remaining % 60).padStart(2, "0");
+  timer.textContent = minutes + ":" + seconds;
+}
+
+updateTimer();
+
+const countdown = setInterval(() => {
+  remaining--;
+  updateTimer();
+
+  if (remaining <= 0) {
+    clearInterval(countdown);
+    installBtn.disabled = false;
+    installBtn.classList.add("ready");
+    installBtn.textContent = "Install / लिंक खोलें";
+
+    // अपने-आप रीडायरेक्ट की कोशिश; बटन वैकल्पिक रूप से उपलब्ध रहेगा।
+    window.location.assign(INSTALL_LINK);
+  }
+}, 1000);
+
+installBtn.addEventListener("click", () => {
+  if (remaining <= 0) {
+    window.location.href = INSTALL_LINK;
+  }
+});
+
+const modal = document.getElementById("termsModal");
+
+document.getElementById("termsBtn").addEventListener("click", () => {
+  modal.classList.add("show");
+});
+
+document.getElementById("closeTerms").addEventListener("click", () => {
+  modal.classList.remove("show");
+});
+
+modal.addEventListener("click", event => {
+  if (event.target === modal) {
+    modal.classList.remove("show");
+  }
+});
+</script>
+
+</body>
+</html>
