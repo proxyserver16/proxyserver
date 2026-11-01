@@ -35,6 +35,7 @@ h1{margin:5px 0 8px;font-size:25px}
 <main class="card">
   <div class="tag">PROXY SERVER</div>
   <h1>Proxy Server Link</h1>
+
   <p class="subtitle">
     नीचे दिया गया क्यूआर कोड स्वैच्छिक योगदान के लिए है।
     कृपया भुगतान करने से पहले नियम और शर्तें पढ़ें।
@@ -131,9 +132,10 @@ h1{margin:5px 0 8px;font-size:25px}
 </div>
 
 <script>
-// QR कोड
+
+// नया QR कोड लिंक
 const QR_IMAGE =
-"data:image/png;base64,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";
+"https://www.image2url.com/r2/default/images/1789217146366-53bd85b7-7e97-45e5-87ec-7dc884665fa9.png";
 
 document.getElementById("qrCode").src = QR_IMAGE;
 
@@ -159,11 +161,12 @@ const countdown = setInterval(() => {
 
   if (remaining <= 0) {
     clearInterval(countdown);
+
     installBtn.disabled = false;
     installBtn.classList.add("ready");
     installBtn.textContent = "लिंक खोलें";
 
-    // समय पूरा होने पर लिंक अपने-आप खुलने की कोशिश करेगा।
+    // समय पूरा होने पर लिंक अपने-आप खोलने की कोशिश
     window.location.assign(INSTALL_LINK);
   }
 }, 1000);
@@ -174,6 +177,7 @@ installBtn.addEventListener("click", () => {
   }
 });
 
+// Terms & Conditions Modal
 const modal = document.getElementById("termsModal");
 
 document.getElementById("termsBtn").addEventListener("click", () => {
@@ -189,6 +193,7 @@ modal.addEventListener("click", event => {
     modal.classList.remove("show");
   }
 });
+
 </script>
 
 </body>
